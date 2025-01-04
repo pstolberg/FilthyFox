@@ -2,10 +2,9 @@ console.log("Auction script loaded successfully.");
 
 // Ensure the script runs after DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Auction script loaded successfully.');
-
-  // Fetch and display the current highest bid
+  console.log("Auction script loaded successfully.");
   fetchHighestBid();
+});
 
   // Attach event listener to the form for submitting bids
   const bidForm = document.getElementById('bid-form');
