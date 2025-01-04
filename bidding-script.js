@@ -1,72 +1,69 @@
-const SCRIPT_BASE_URL = 'https://script.google.com/macros/s/AKfycbwd2dM5UtXaXxPRluwTLvNtHh1LQhzNa1zN02gZiu5q7C7LZoWSjFFhASJ3HmQMrxw3/exec';
+// Ensure the script runs after DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Auction script loaded successfully.');
 
-function handleJsonp(response) {
-  console.log('JSONP response:', response);
-
-  if (response.highestBid !== undefined) {
-    document.getElementById('current-bid').textContent = '$' + response.highestBid;
-  } else if (response.status === 'success') {
-    const msgEl = document.getElementById('submit-message');
-    msgEl.textContent = 'Your bid was submitted successfully!';
-    msgEl.style.display = 'block';
-    msgEl.style.color = 'green';
-
-    fetchHighestBid();
-  } else if (response.error) {
-    const msgEl = document.getElementById('submit-message');
-    msgEl.textContent = 'Error: ' + response.error;
-    msgEl.style.display = 'block';
-    msgEl.style.color = 'red';
-  } else {
-    console.log('Unknown response:', response);
-  }
-}
-
-function fetchHighestBid() {
-  const url = SCRIPT_BASE_URL + '?action=getHighestBid&callback=handleJsonp';
-  jsonpRequest(url);
-}
-
-function submitBid(name, email, bid) {
-  const url = SCRIPT_BASE_URL
-    + '?action=submitBid'
-    + '&callback=handleJsonp'
-    + '&name=' + encodeURIComponent(name)
-    + '&email=' + encodeURIComponent(email)
-    + '&bid=' + encodeURIComponent(bid);
-
-  jsonpRequest(url);
-}
-
-function jsonpRequest(url) {
-  const scriptEl = document.createElement('script');
-  scriptEl.src = url;
-  scriptEl.onload = () => {
-    document.body.removeChild(scriptEl);
-  };
-  document.body.appendChild(scriptEl);
-}
-
-window.addEventListener('DOMContentLoaded', () => {
+  // Fetch and display the current highest bid
   fetchHighestBid();
 
+  // Attach event listener to the form for submitting bids
   const bidForm = document.getElementById('bid-form');
   if (bidForm) {
     bidForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      const msgEl = document.getElementById('submit-message');
-      msgEl.style.display = 'none';
-      msgEl.textContent = '';
-      msgEl.style.color = 'green';
+      console.log('Bid form submitted.');
 
       const name = document.getElementById('bidder-name').value;
       const email = document.getElementById('bidder-email').value;
       const bid = document.getElementById('bid-amount').value;
 
+      // Submit the bid
       submitBid(name, email, bid);
-      bidForm.reset();
     });
   } else {
-    console.error('Bid form not found in DOM');
+    console.error('Bid form not found in DOM.');
   }
 });
+
+// Function to fetch the current highest bid
+function fetchHighestBid() {
+  const url = 'https://script.google.com/macros/s/AKfycbwd2dM5UtXaXxPRluwTLvNtHh1LQhzNa1zN02gZiu5q7C7LZoWSjFFhASJ3HmQMrxw3/exec?action=getHighestBid&callback=handleJsonp';
+  jsonpRequest(url);
+}
+
+// Function to submit a new bid
+function submitBid(name, email, bid) {
+  const url = `https://script.google.com/macros/s/AKfycbwd2dM5UtXaXxPRluwTLvNtHh1LQhzNa1zN02gZiu5q7C7LZoWSjFFhASJ3HmQMrxw3/exec?action=submitBid&callback=handleJsonp&name=${encodeURIComponent(
+    name
+  )}&email=${encodeURIComponent(email)}&bid=${encodeURIComponent(bid)}`;
+  jsonpRequest(url);
+}
+
+// Handle JSONP responses
+function handleJsonp(response) {
+  console.log('JSONP response:', response);
+
+  if (response.highestBid !== undefined) {
+    document.getElementById('current-bid').textContent = `$${response.highestBid}`;
+  } else if (response.status === 'success') {
+    document.getElementById('submit-message').textContent = 'Your bid was submitted successfully!';
+    document.getElementById('submit-message').style.display = 'block';
+    fetchHighestBid(); // Refresh the highest bid
+  } else if (response.error) {
+    document.getElementById('submit-message').textContent = `Error: ${response.error}`;
+    document.getElementById('submit-message').style.display = 'block';
+    document.getElementById('submit-message').style.color = 'red';
+  } else {
+    console.error('Unknown JSONP response:', response);
+  }
+}
+
+// Helper function to make JSONP requests
+function jsonpRequest(url) {
+  const script = document.createElement('script');
+  script.src = url;
+  script.onload = () => {
+    document.body.removeChild(script);
+  };
+  document.body.appendChild(script);
+}
+
