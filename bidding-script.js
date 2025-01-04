@@ -4,7 +4,6 @@ console.log("Auction script loaded successfully.");
 document.addEventListener('DOMContentLoaded', () => {
   console.log("DOM fully loaded, auction script initialized."); // Debug for DOMContentLoaded
   fetchHighestBid();
-});
 
   // Attach event listener to the form for submitting bids
   const bidForm = document.getElementById('bid-form');
@@ -68,4 +67,5 @@ function jsonpRequest(url) {
   };
   document.body.appendChild(script);
 }
+
 
