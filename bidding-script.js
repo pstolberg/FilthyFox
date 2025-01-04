@@ -1,3 +1,5 @@
+console.log("Auction script loaded successfully.");
+
 // Ensure the script runs after DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Auction script loaded successfully.');
