@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to fetch the current highest bid
 function fetchHighestBid() {
-  const url = 'https://script.google.com/macros/s/AKfycbwd2dM5UtXaXxPRluwTLvNtHh1LQhzNa1zN02gZiu5q7C7LZoWSjFFhASJ3HmQMrxw3/exec?action=getHighestBid&callback=handleJsonp';
+  console.log("fetchHighestBid called"); // Add this line for debugging
+  const url = 'https://YOUR_APPS_SCRIPT_URL?action=getHighestBid&callback=handleJsonp';
   jsonpRequest(url);
 }
 
