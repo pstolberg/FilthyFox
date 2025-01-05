@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Function to fetch the current highest bid
 function fetchHighestBid() {
-  console.log("fetchHighestBid called"); // Add this line for debugging
-  const url = 'https://script.google.com/macros/s/AKfycbwd2dM5UtXaXxPRluwTLvNtHh1LQhzNa1zN02gZiu5q7C7LZoWSjFFhASJ3HmQMrxw3/exec?action=getHighestBid&callback=handleJsonp';
-  jsonpRequest(url);
+  console.log("fetchHighestBid called"); // Log that the function is called
+
+  const url = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?action=getHighestBid&callback=handleJsonp';
+  console.log("JSONP request URL:", url); // Log the URL being used
 }
 
 // Function to submit a new bid
